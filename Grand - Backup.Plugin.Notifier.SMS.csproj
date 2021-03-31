@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AspNetCoreModuleName>Grand.Plugin.Notifier.SMS</AspNetCoreModuleName>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Grand.Web\Plugins\Notifier.SMS\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Grand.Web\Plugins\Notifier.SMS</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <RemoveDir Directories="..\..\Grand.Web\Plugins\Notifier.SMS\refs" />
+  </Target>
+
+  <Target Name="CopyFile" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <CopyFiles Include="$(NuGetPackageRoot)\microsoft.aspnetcore.authentication.facebook\3.1.10\lib\netcoreapp3.1\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(CopyFiles)" DestinationFolder="..\..\Grand.Web\Plugins\Notifier.SMS\" />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Grand.Domain\Grand.Domain.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Grand.Core\Grand.Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Grand.Framework\Grand.Framework.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Grand.Services\Grand.Services.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.14.0" />
+    <PackageReference Include="Google.Protobuf.Tools" Version="3.14.0" />
+    <PackageReference Include="NotificationManagement.Presentation.Api.GRPC.SDK" Version="1.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="logo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Configure.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Protobuf Include="..\NotificationManagement.Presentation.Api.GRPC\Protos\NotificationGrpc.proto" GrpcServices="Client" />
+  </ItemGroup>-->
+</Project>
